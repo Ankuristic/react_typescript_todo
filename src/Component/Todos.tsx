@@ -1,25 +1,45 @@
-import {useTodos} from '../store/todos'
+import { useTodos } from '../store/todos';
+import { useSearchParams } from "react-router-dom";
+
+
+
 const Todos = () => {
-    const [todos] = useTodos();
+    const {todos, toggleTodoAsCompleted, handleDeleteTodo} = useTodos();
+
+    const [searchParams] = useSearchParams();
+    const todos̥Data = searchParams.get("todos");
+    console.log("🚀 ~ file: todos.tsx:10 ~ Todos ~ todos̥Data:", todos̥Data)
+
+
     let filterData = todos;
+
+    if(todos̥Data === "active"){
+        filterData = filterData.filter((task) => !task.completed  )
+    }
+
+    if(todos̥Data === "completed"){
+        filterData = filterData.filter((task) => task.completed  )
+    }
   return (
- <ul>
+    <ul className="main-task">
+
     {
-        filterData.map((todo:)=>{
+        filterData.map((todo)=>{
             return <li key ={todo.id}>
                 <input type ="checkbox" id ={`todo- ${todo.id}`}
                 checked = {todo.completed}
                 onChange ={()=> toggleTodoAsCompleted(todo.id)}
                 />
-                <label  htmlFor ="">  {todo.task}
+                 <label htmlFor={`todo-${todo.id}`} > {todo.task} </label>
+
                 {
                     todo.completed && (
                         <button type = 'button' onClick ={() => handleDeleteTodo(todo.id)}> Deleted </button>
                     )
                 }
-                </label>
+                </li>
 
-            </li>
+         
 
         })
     }

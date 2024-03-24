@@ -1,6 +1,8 @@
 
-import Addtodo from "./Component/Addtodo.tsx"
-import Todos from "./Component/todos.tsx"
+import Addtodo from "./Component/Addtodo"
+import Navbar from "./Component/Navbar"
+import Todos from "./Component/Todos"
+import "./App.css"
 
 const App = () => {
   return (
