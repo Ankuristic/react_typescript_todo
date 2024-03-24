@@ -29,10 +29,19 @@ export const todosContext=  createContext<TodosContext | null >(null)
 
 export  const TodosProvider =({children}:TodosProviderProps) =>{
 
-    const [todos, setTodos] = useState<Todo[]>([])
+    const [todos, setTodos] = useState<Todo[]>(()=>{
+        try{
+            const newTodos= localStorage.getItem("todos") || "[]"
+            return JSON.parse(newTodos) s Todo []
+        } catch(error){
+            return []
+        }
+    })
+
+
 
     const handleAddTodo =(task:string){
-        setTodos((prev)=>{
+        setTodos((prev:any)=>{
             const newTodos :Todo[] =[
                 {
                     id:Math.random().toString(),
@@ -43,6 +52,8 @@ export  const TodosProvider =({children}:TodosProviderProps) =>{
 
                 ...prev
             ]
+
+            localStorage.setItem("todos",JSON.stringify(newTodos))
 
             return newTodos
         })
@@ -57,12 +68,31 @@ export  const TodosProvider =({children}:TodosProviderProps) =>{
                     }
                 })
 
-                return newtodo
+
+
+
+                // delete the individual data
+                
+
+                return newTodos
+            })
+        }
+
+
+        // delete the individual data
+
+        const handleDeleteTodo =(id:string) =>{
+            setTodos((prev)=>{
+                let newTodos = prev.filter((filterTodo) => filterTodo.id === id)
+
+                return newTodos;
+
+
             })
         }
 
     }
-    return <todosContext.Provider value ={{todo,handleAddToDo}}>
+    return <todosContext.Provider value ={{todo,handleAddToDo,toggleTodoAsCompleted}}>
         {children}
     </todosContext.Provider>
 }
